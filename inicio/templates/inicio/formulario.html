@@ -1,0 +1,19 @@
+{% extends "inicio/encabezado.html" %}
+
+{% block titulo %}Formulario{% endblock %}
+
+
+{% block contenido %}
+<h2>Registrarse</h2>
+<form>
+    <label>Nombre:</label><input type="text" name="nombre" />
+    <label>Email:</label><input type="email" name="email" />
+    <label>Cursos:</label>
+    <select>
+        <option value="Ing. sistemas">Ing. sistemas</option>
+        <option value="Ing. disenio">Ing. disenio</option>
+    </select>
+    <input type="radio" value="Matutino" />
+    <input type="submit" value="Enviar">
+</form>
+{% endblock %}

@@ -1,0 +1,10 @@
+Inicio del servidor
+python manage.py runserver
+
+sincronizar base de datos
+aplicar y crear las tablas
+    ctrl + c (detener servidor) 
+    python manage.py migrate
+
+para crear una app de nombre inicio
+    python manage.py startapp inicio
