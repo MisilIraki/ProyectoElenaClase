@@ -64,14 +64,14 @@
             <div class="user-menu">
                 <a href="#">
                     <img src="{%block imagen %}{% endblock %}" alt="Usuario">
-                        <div class="user-info">
-                            {% block sidebar_info %}{% endblock %}
-                        </div>
+                    <div class="user-info">
+                        {% block sidebar_info %}{% endblock %}
+                    </div>
                     </img>
                 </a>
             </div>
 
-            
+
 
             <div class="sidebar-content">
                 <!-- Menú de navegación -->
@@ -85,9 +85,45 @@
         </div>
         <!-- /sidebar -->
     </div>
+
+    <!-- Contenido Principal-->
+    <div class="page-content">
+
+
+        <!--Encabezdo -->
+        <div class="page-header">
+            <div class="page-title">
+                <h3>{% block tituloPagina %}{% endblock %}
+                    <small>{% block subtitulo %}{% endblock %} </small>
+                </h3>
+            </div>
+
+
+        </div>
+        <!-- /Encabezado-->
+
+        <!-- Barra de naegacion -->
+        <div class="breadcrumb-line">
+            <ul class="breadcrumb">
+                <a href="{%url 'Principal'%}">
+                    {%if request.path == '/'%}
+                    Principal
+                    {%else%}
+                    Principal{{request.path}}
+                    {%endif%}
+                </a>
+
+            </ul>
+        </div>
+        <!-- Barra de naegacion -->
+
+    </div>
+    <!-- /Contenido Principal-->
+
     {% block contenido %}
 
     {% endblock %}
+
 </body>
 
 </html>
