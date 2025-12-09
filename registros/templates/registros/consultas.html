@@ -1,0 +1,56 @@
+{% extends "inicio/encabezado.html" %}
+{% block titulo %}Consultas ORM{% endblock %}
+{% block imagen %}
+{% load static %}
+{% static 'inicio/images/home.png' %}
+{% endblock %}
+{% block subtexto %}Consultas{% endblock %}
+{% block span %}DMS{% endblock %}
+
+{% block contenido %}
+{% block encabezado %}
+<h3>Consultas ORM
+    <small>{{ titulo }}</small>
+</h3>
+{% endblock %}
+
+<p class="muted">{{ descripcion }}</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Foto</th>
+            <th>Matrícula</th>
+            <th>Nombre</th>
+            <th>Carrera</th>
+            <th>Turno</th>
+            <th>Registrado</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for alumno in alumnos %}
+        <tr>
+            <td class="text-center">
+                {% if alumno.imagen %}
+                <img src="{{ alumno.imagen.url }}" alt="Foto de Alumno" class="img-media">
+                {% else %}
+                <span class="muted">Sin foto</span>
+                {% endif %}
+            </td>
+            <td class="text-semibold">{{ alumno.matricula }}</td>
+            <td class="muted">{{ alumno.nombre }}</td>
+            <td class="muted">{{ alumno.carrera }}</td>
+            <td class="muted">{{ alumno.turno }}</td>
+            <td class="muted">{{ alumno.created|date:"Y-m-d H:i" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6" class="text-center muted">No se encontró ningún alumno.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+

@@ -1,0 +1,54 @@
+{% extends "inicio/encabezado.html" %}
+
+{% block titulo %}Consultas Comentarios{% endblock %}
+{% block imagen %}
+{% load static %}
+{% static 'inicio/images/home.png' %}
+{% endblock %}
+{% block subtexto %}Comentarios{% endblock %}
+{% block span %}DMS{% endblock %}
+
+{% block contenido %}
+{% block encabezado %}
+<h3>Consultas ComentarioContacto
+    <small>{{ titulo }}</small>
+</h3>
+{% endblock %}
+
+<p class="muted">{{ descripcion }}</p>
+
+{% if solo_texto %}
+<ol>
+    {% for comentario in comentarios %}
+    <li>{{ comentario|linebreaksbr }}</li>
+    {% empty %}
+    <li class="muted">No se encontraron comentarios para este criterio.</li>
+    {% endfor %}
+</ol>
+{% else %}
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Usuario</th>
+            <th>Comentario</th>
+            <th>Registrado</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for comentario in comentarios %}
+        <tr>
+            <td class="text-semibold">{{ comentario.usuario }}</td>
+            <td class="muted">{{ comentario.comentario|striptags|truncatechars:120 }}</td>
+            <td class="muted">{{ comentario.created|date:"Y-m-d H:i" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3" class="text-center muted">No se encontró ningún comentario.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% endblock %}
+

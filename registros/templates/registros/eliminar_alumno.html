@@ -1,0 +1,59 @@
+{% extends "inicio/encabezado.html" %}
+
+{% block titulo %}Eliminar Comentario{% endblock %}
+{% block imagen %}
+    {%load static%}
+    {%static 'inicio/images/eliminar.png'%}
+{%endblock%}
+
+{% block sidebar_info %}
+    Eliminar Comentario<span>DSM</span>
+{% endblock %}
+
+{% block tituloPagina %}Eliminar Comentario{% endblock %}
+{% block subtitulo %}Eliminar Comentario de Contacto{% endblock %}
+
+{% block contenido %}
+<div class="container">
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <h3 class="panel-title">Confirmar Eliminación de Comentario</h3>
+        </div>
+        <div class="panel-body">
+            <div class="alert alert-warning">
+                <strong>¡Advertencia!</strong> Estás a punto de eliminar el siguiente comentario. Esta acción no se puede deshacer.
+            </div>
+            
+            <div class="well">
+                <h4>Información del Comentario:</h4>
+                <table class="table table-bordered">
+                    <tr>
+                        <th width="150">Usuario:</th>
+                        <td>{{ comentario.usuario }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fecha del Comentario:</th>
+                        <td>{{ comentario.created|date:"d/m/Y H:i" }}</td>
+                    </tr>
+                    <tr>
+                        <th>Comentario:</th>
+                        <td>{{ comentario.comentario|striptags|truncatewords:30 }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <form method="post" action="{% url 'eliminar_alumno' comentario.id %}">
+                {% csrf_token %}
+                <div class="form-actions text-right">
+                    <a href="{% url 'ConsultarComentario' %}" class="btn btn-default">
+                        <i class="icon-cross"></i> Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="icon-trash"></i> Confirmar Eliminación del Comentario
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
