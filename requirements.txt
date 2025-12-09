@@ -1,0 +1,4 @@
+django = 5.2.8
+django-ckeditor = 6.7.3
+pillow = 12.0.0
+pymysql = 1.1.2
