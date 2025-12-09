@@ -21,13 +21,27 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-k2_scrl479eqi13&&6aj(paibu4w=2g@pftscicwh$iz@+4oh7'
+SECRET_KEY = 'm9Rk-7yZTNROMqRkfcFQ5kSHDTb6SZhOpQftkp08sLFS4nRD3NZSXnU-GIsxj8peqTYCfc-RXSRBnv1YltlbMg'
+DEBUG = False
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = ['*']
 
+ALLOWED_HOSTS = ["paginatienda.pythonanywhere.com", "localhost", "127.0.0.1"]
+CSRF_TRUSTED_ORIGINS = ['https://paginatienda.pythonanywhere.com']
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+# Opcional y con cuidado si solo usas https:
+# SECURE_HSTS_SECONDS = 31536000
+
+# Configuración de CORS
+CORS_ALLOWED_ORIGINS = [
+    'https://paginatienda.pythonanywhere.com',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]
 
 # Application definition
 
