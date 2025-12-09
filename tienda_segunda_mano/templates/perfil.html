@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Perfil - Tienda de Segunda Mano{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+        {% if perfil.imagen_perfil %}
+        <img src="{{ perfil.imagen_perfil.url }}" class="img-fluid rounded-circle" alt="Foto de perfil">
+        {% else %}
+        <img src="{% static 'images/default-profile.jpg' %}" class="img-fluid rounded-circle" alt="Foto de perfil por defecto">
+        {% endif %}
+                <h3 class="mt-3">{{ user.username }}</h3>
+                <p class="muted">{{ perfil.get_tipo_usuario_display }}</p>
+                <a href="{% url 'usuarios:editar_perfil' %}" class="btn btn-teal btn-sm mt-2">
+                    <i class="fas fa-pen me-1"></i> Editar perfil
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <h2 class="mb-3">Mi Perfil</h2>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Teléfono:</strong> {{ perfil.telefono }}</p>
+        <p><strong>Ubicación:</strong> {{ perfil.ubicacion }}</p>
+        <p><strong>Descripción:</strong> {{ perfil.descripcion }}</p>
+
+        {% if user.is_superuser %}
+        <h3 class="mt-4 mb-3">Mis Productos</h3>
+        <div class="row">
+            {% for producto in productos %}
+            <div class="col-md-4 mb-3">
+                <div class="card product-card h-100">
+                    {% if producto.imagen %}
+                    <img src="{{ producto.imagen.url }}" class="card-img-top product-image" alt="{{ producto.titulo }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ producto.titulo }}</h5>
+                        <p class="text-gold fw-semibold mb-2">${{ producto.precio }}</p>
+                        <a href="{% url 'productos:editar_producto' producto.id %}" class="btn btn-sm btn-outline-primary">Editar</a>
+                        <a href="{% url 'productos:eliminar_producto' producto.id %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p>No has publicado productos aún.</p>
+            {% endfor %}
+        </div>
+        <a href="{% url 'productos:subir_producto' %}" class="btn btn-primary">Subir Nuevo Producto</a>
+        {% else %}
+        <h3>Mis Compras</h3>
+        <p>Historial de compras próximamente.</p>
+        {% endif %}
+
+        <h3>Mis Reseñas</h3>
+        {% for resena in resenas %}
+        <div class="card mb-2">
+            <div class="card-body">
+                <p>{{ resena.comentario }}</p>
+                <small class="text-muted">{{ resena.created|date:"d/m/Y" }}</small>
+            </div>
+        </div>
+        {% empty %}
+        <p>No has hecho reseñas aún.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

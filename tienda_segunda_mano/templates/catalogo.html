@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Catálogo - Tienda de Segunda Mano{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1 class="mb-0">Tienda</h1>
+        <p class="muted mb-0">Explora productos únicos de segunda mano, filtrados a tu medida.</p>
+    </div>
+</div>
+
+<!-- Filtros Sidebar -->
+<div class="row">
+    <div class="col-md-3 mb-4 mb-md-0">
+        <div class="card h-100">
+            <div class="card-header bg-teal text-white">
+                <h5>Filtros</h5>
+            </div>
+            <div class="card-body">
+                <form method="get">
+                    <div class="mb-3">
+                        <label class="form-label">Buscar</label>
+                        <input type="text" name="q" class="form-control" placeholder="Buscar..." value="{{ query|default_if_none:'' }}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Categoría</label>
+                        <select name="categoria" class="form-select">
+                            <option value="">Todas</option>
+                            {% for cat_val, cat_label in categorias %}
+                            <option value="{{ cat_val }}" {% if categoria|lower == cat_val|lower %}selected{% endif %}>{{ cat_label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tamaño</label>
+                        <select name="tamaño" class="form-select">
+                            <option value="">Todos</option>
+                            {% for tam in tamaños %}
+                            <option value="{{ tam }}" {% if tamaño == tam %}selected{% endif %}>{{ tam }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Color</label>
+                        <div class="d-flex flex-wrap">
+                            {% for col in colores %}
+                            <div class="form-check me-2">
+                                <input class="form-check-input" type="checkbox" name="color" value="{{ col }}" {% if col in colors %}checked{% endif %}>
+                                <label class="form-check-label">{{ col|title }}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Precio</label>
+                        <input type="number" name="precio_min" class="form-control mb-1" placeholder="Mín" value="{{ precio_min|default_if_none:'' }}" step="0.01" min="0">
+                        <input type="number" name="precio_max" class="form-control" placeholder="Máx" value="{{ precio_max|default_if_none:'' }}" step="0.01" min="0">
+                    </div>
+                    <button type="submit" class="btn btn-teal w-100">Aplicar Filtros</button>
+                    <a href="{% url 'productos:catalogo' %}" class="btn btn-outline-secondary w-100 mt-1">Limpiar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        {% if not has_filters and secciones_categoria %}
+        <!-- Secciones por categoría cuando no hay filtros -->
+        {% for bloque in secciones_categoria %}
+        <div class="mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="mb-0">{{ bloque.label }}</h4>
+                <a href="{% url 'productos:catalogo' %}?categoria={{ bloque.slug }}" class="small text-teal">Ver todo</a>
+            </div>
+            <div class="row">
+                {% for producto in bloque.items %}
+                <div class="col-md-4 mb-4">
+                    <div class="card product-card h-100">
+                        {% if producto.imagen %}
+                        <img src="{{ producto.imagen.url }}" class="card-img-top product-image" alt="{{ producto.titulo }}">
+                        {% else %}
+                        <img src="{% static 'images/no-image.jpg' %}" class="card-img-top product-image" alt="Sin imagen">
+                        {% endif %}
+                        <div class="badge-category">{{ producto.categoria }}</div>
+                        <div class="badge-price">${{ producto.precio }}</div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ producto.titulo }}</h5>
+                            <p class="card-text text-muted">{{ producto.descripcion|truncatechars:100 }}</p>
+                            <p class="product-meta mb-2">
+                                <span><i class="fas fa-location-dot"></i> {{ producto.ubicacion }}</span>
+                            </p>
+                            <a href="{% url 'productos:detalle_producto' producto.id %}" class="btn btn-teal mt-auto">Ver Detalles</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <!-- Productos Grid estándar -->
+        <div class="row">
+            {% for producto in productos %}
+            <div class="col-md-4 mb-4">
+                <div class="card product-card h-100">
+                    {% if producto.imagen %}
+                    <img src="{{ producto.imagen.url }}" class="card-img-top product-image" alt="{{ producto.titulo }}">
+                    {% else %}
+                    <img src="{% static 'images/no-image.jpg' %}" class="card-img-top product-image" alt="Sin imagen">
+                    {% endif %}
+                    <div class="badge-category">{{ producto.categoria }}</div>
+                    <div class="badge-price">${{ producto.precio }}</div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ producto.titulo }}</h5>
+                        <p class="card-text text-muted">{{ producto.descripcion|truncatechars:100 }}</p>
+                        <p class="product-meta mb-2">
+                            <span><i class="fas fa-location-dot"></i> {{ producto.ubicacion }}</span>
+                        </p>
+                        <a href="{% url 'productos:detalle_producto' producto.id %}" class="btn btn-teal mt-auto">Ver Detalles</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <p class="text-center">No se encontraron productos. <a href="{% url 'productos:catalogo' %}">Ver todos</a></p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Paginación -->
+        {% if productos.has_other_pages %}
+        <nav aria-label="Paginación" class="d-flex justify-content-center mt-4">
+            <ul class="pagination">
+                {% if productos.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ productos.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if categoria %}&categoria={{ categoria }}{% endif %}{% if tamaño %}&tamaño={{ tamaño }}{% endif %}{% for color in colors %}&color={{ color }}{% endfor %}{% if precio_min %}&precio_min={{ precio_min }}{% endif %}{% if precio_max %}&precio_max={{ precio_max }}{% endif %}">Anterior</a></li>
+                {% endif %}
+                {% for num in productos.paginator.page_range %}
+                <li class="page-item {% if productos.number == num %}active{% endif %}"><a class="page-link" href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}{% if categoria %}&categoria={{ categoria }}{% endif %}{% if tamaño %}&tamaño={{ tamaño }}{% endif %}{% for color in colors %}&color={{ color }}{% endfor %}{% if precio_min %}&precio_min={{ precio_min }}{% endif %}{% if precio_max %}&precio_max={{ precio_max }}{% endif %}">{{ num }}</a></li>
+                {% endfor %}
+                {% if productos.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ productos.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if categoria %}&categoria={{ categoria }}{% endif %}{% if tamaño %}&tamaño={{ tamaño }}{% endif %}{% for color in colors %}&color={{ color }}{% endfor %}{% if precio_min %}&precio_min={{ precio_min }}{% endif %}{% if precio_max %}&precio_max={{ precio_max }}{% endif %}">Siguiente</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

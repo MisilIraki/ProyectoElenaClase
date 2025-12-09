@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block title %}Subir Producto - Tienda de Segunda Mano{% endblock %}
+
+{% block content %}
+<h1 class="mb-3">Subir Nuevo Producto</h1>
+<p class="muted mb-4">Describe tu producto con claridad para que encuentre su mejor segunda oportunidad.</p>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label">Título</label>
+                        {{ form.titulo }}
+                        {% if form.titulo.errors %}<div class="text-danger small">{{ form.titulo.errors }}</div>{% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Descripción</label>
+                        {{ form.descripcion }}
+                        {% if form.descripcion.errors %}<div class="text-danger small">{{ form.descripcion.errors }}</div>{% endif %}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label">Precio</label>
+                                {{ form.precio }}
+                                {% if form.precio.errors %}<div class="text-danger small">{{ form.precio.errors }}</div>{% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label">Categoría</label>
+                                {{ form.categoria }}
+                                {% if form.categoria.errors %}<div class="text-danger small">{{ form.categoria.errors }}</div>{% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label">Subcategoría</label>
+                                {{ form.subcategoria }}
+                                {% if form.subcategoria.errors %}<div class="text-danger small">{{ form.subcategoria.errors }}</div>{% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Ubicación</label>
+                                {{ form.ubicacion }}
+                                {% if form.ubicacion.errors %}<div class="text-danger small">{{ form.ubicacion.errors }}</div>{% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Tamaño</label>
+                                {{ form.tamaño }}
+                                {% if form.tamaño.errors %}<div class="text-danger small">{{ form.tamaño.errors }}</div>{% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Color</label>
+                                {{ form.color }}
+                                {% if form.color.errors %}<div class="text-danger small">{{ form.color.errors }}</div>{% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Imagen</label>
+                                {{ form.imagen }}
+                                {% if form.imagen.errors %}<div class="text-danger small">{{ form.imagen.errors }}</div>{% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-teal">Subir Producto</button>
+                    <a href="{% url 'usuarios:perfil' %}" class="btn btn-soft ms-2">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 d-none d-md-block">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5>Consejos para una buena publicación</h5>
+                <ul class="small mt-2">
+                    <li>Usa fotos claras y bien iluminadas.</li>
+                    <li>Describe el estado real del producto.</li>
+                    <li>Incluye medidas o tallas si aplica.</li>
+                    <li>Elige una categoría coherente.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if subcats %}
+{{ subcats|json_script:"subcat-data" }}
+<script>
+(() => {
+    const mapping = JSON.parse(document.getElementById('subcat-data').textContent);
+    const catSelect = document.getElementById('id_categoria');
+    const subSelect = document.getElementById('id_subcategoria');
+
+    if (!catSelect || !subSelect) return;
+
+    const rebuild = () => {
+        const cat = catSelect.value;
+        const options = mapping[cat] || [];
+        const current = subSelect.value;
+        subSelect.innerHTML = '';
+        const blank = document.createElement('option');
+        blank.value = '';
+        blank.textContent = '---------';
+        subSelect.appendChild(blank);
+        options.forEach(([val, label]) => {
+            const opt = document.createElement('option');
+            opt.value = val;
+            opt.textContent = label;
+            if (val === current) opt.selected = true;
+            subSelect.appendChild(opt);
+        });
+    };
+
+    catSelect.addEventListener('change', rebuild);
+    // Inicializa al cargar
+    rebuild();
+})();
+</script>
+{% endif %}
+{% endblock %}

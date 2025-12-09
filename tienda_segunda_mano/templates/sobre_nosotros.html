@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sobre Nosotros - SecondChance{% endblock %}
+
+{% block content %}
+<div class="about-hero mb-5">
+    <div class="glow"></div>
+    <div class="row align-items-center position-relative">
+        <div class="col-lg-7 mb-4 mb-lg-0">
+            <span class="pill-badge mb-3"><span class="dot"></span> Plataforma circular</span>
+            <h1 class="mb-3">Rock steady, blazing fast y 100% circular.</h1>
+            <p class="lead mb-4">SecondChance conecta a compradores y vendedores para que cada producto tenga más de una vida. Infraestructura estable, entregas rápidas y confianza en cada transacción.</p>
+            <div class="about-stats mb-3">
+                <div class="stat-card">
+                    <div class="label">Disponibilidad</div>
+                    <div class="value">99.95%</div>
+                    <small>Monitoreo 24/7</small>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Velocidad</div>
+                    <div class="value">50 ms</div>
+                    <small>Promedio de respuesta</small>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Comunidad</div>
+                    <div class="value">+25K</div>
+                    <small>Vendedores activos</small>
+                </div>
+            </div>
+            <div class="partners-row">
+                <span class="partner-pill">Pagos Seguros</span>
+                <span class="partner-pill">Entregas Verificadas</span>
+                <span class="partner-pill">IA Antifraude</span>
+                <span class="partner-pill">Green Shipping</span>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="card about-timeline">
+                <div class="card-body">
+                    <h5 class="mb-3">Nuestro flujo en 4 pasos</h5>
+                    <div class="about-step">
+                        <span class="badge">1</span>
+                        <div>
+                            <strong>Publica y verifica</strong>
+                            <p class="mb-0 small text-muted">Validamos datos, fotos e historial para asegurar confianza.</p>
+                        </div>
+                    </div>
+                    <div class="about-step">
+                        <span class="badge">2</span>
+                        <div>
+                            <strong>Match inteligente</strong>
+                            <p class="mb-0 small text-muted">Sugerimos compradores según categoría, ubicación y reseñas.</p>
+                        </div>
+                    </div>
+                    <div class="about-step">
+                        <span class="badge">3</span>
+                        <div>
+                            <strong>Pago protegido</strong>
+                            <p class="mb-0 small text-muted">Fondos en custodia hasta confirmar entrega sin sorpresas.</p>
+                        </div>
+                    </div>
+                    <div class="about-step">
+                        <span class="badge">4</span>
+                        <div>
+                            <strong>Huella verde</strong>
+                            <p class="mb-0 small text-muted">Rastrea CO₂ ahorrado al comprar segunda mano.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="feature-card">
+            <div class="icon"><i class="fas fa-bolt"></i></div>
+            <h5>Rápido y estable</h5>
+            <p class="muted mb-2">Infraestructura optimizada para que cada publicación y búsqueda cargue sin esperas.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="feature-card">
+            <div class="icon"><i class="fas fa-shield-alt"></i></div>
+            <h5>Confianza total</h5>
+            <p class="muted mb-2">Verificación de vendedores, reseñas y pagos protegidos para compras sin riesgo.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="feature-card">
+            <div class="icon"><i class="fas fa-leaf"></i></div>
+            <h5>Impacto positivo</h5>
+            <p class="muted mb-2">Datos de CO₂ ahorrado y trazabilidad de reuso para apoyar el consumo responsable.</p>
+        </div>
+    </div>
+</div>
+
+<div class="about-cta mt-4">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h3>Listo para subir tu inventario?</h3>
+            <p class="mb-0">Únete a la comunidad que mueve productos de segunda mano con la misma estabilidad y velocidad que las grandes ligas.</p>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <a href="{% url 'usuarios:registro' %}" class="btn btn-dark">Crear cuenta</a>
+            <a href="{% url 'productos:catalogo' %}" class="btn btn-outline-dark ms-2">Explorar tienda</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
